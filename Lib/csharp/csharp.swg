@@ -419,8 +419,8 @@ SWIGINTERN const char * SWIG_UnpackData(const char *c, void *ptr, size_t sz) {
 #endif
 
 %typemap(directorin) SWIGTYPE 
-%{ $input = (void *)&$1; %}
-%typemap(csdirectorin) SWIGTYPE "new $&csclassname($iminput, false)"
+%{ $input = (void *)new $1_ltype((const $1_ltype &)$1); %}
+%typemap(csdirectorin) SWIGTYPE "new $&csclassname($iminput, true)"
 %typemap(csdirectorout) SWIGTYPE "$&csclassname.getCPtr($cscall).Handle"
 
 /* Generic pointers and references */
@@ -899,6 +899,13 @@ SWIGINTERN const char * SWIG_UnpackData(const char *c, void *ptr, size_t sz) {
     $*csclassname ret = (cPtr == global::System.IntPtr.Zero) ? null : new $*csclassname(cPtr, $owner);$excode
     return ret;
   }
+%typemap(csvarout, excode=SWIGEXCODE) SWIGTYPE *const& %{
+    get {
+      global::System.IntPtr cPtr = $imcall;
+      $*csclassname ret = (cPtr == global::System.IntPtr.Zero) ? null : new $*csclassname(cPtr, $owner);$excode
+      return ret;
+    } %}
+
 %typemap(in) SWIGTYPE *const& ($*1_ltype temp = 0)
 %{ temp = ($*1_ltype)$input;
    $1 = ($1_ltype)&temp; %}
@@ -916,7 +923,8 @@ SWIGINTERN const char * SWIG_UnpackData(const char *c, void *ptr, size_t sz) {
     global::System.IntPtr ret = $imcall;$excode
     return ret;
   }
-
+%typemap(csdirectorin) void *VOID_INT_PTR "$iminput"
+%typemap(csdirectorout) void *VOID_INT_PTR "$cscall"
 
 /* Typemaps used for the generation of proxy and type wrapper class code */
 %typemap(csbase)                      SWIGTYPE, SWIGTYPE *, SWIGTYPE &, SWIGTYPE &&, SWIGTYPE [], SWIGTYPE (CLASS::*) ""
@@ -1050,6 +1058,7 @@ SWIG_CSBODY_TYPEWRAPPER(internal, protected, internal, SWIGTYPE)
 #define %csmethodmodifiers          %feature("cs:methodmodifiers")
 #define %csnothrowexception         %feature("except")
 #define %csattributes               %feature("cs:attributes")
+#define %proxycode                  %insert("proxycode")
 
 %pragma(csharp) imclassclassmodifiers="class"
 %pragma(csharp) moduleclassmodifiers="public class"
@@ -1065,6 +1074,8 @@ SWIG_CSBODY_TYPEWRAPPER(internal, protected, internal, SWIGTYPE)
 
 /* const pointers */
 %apply SWIGTYPE * { SWIGTYPE *const }
+%apply SWIGTYPE (CLASS::*) { SWIGTYPE (CLASS::*const) }
+%apply SWIGTYPE & { SWIGTYPE (CLASS::*const&) }
 
 /* csharp keywords */
 %include <csharpkw.swg>

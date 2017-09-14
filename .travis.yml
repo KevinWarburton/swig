@@ -9,9 +9,6 @@ matrix:
     - compiler: gcc
       os: linux
       env: SWIGLANG=
-    - compiler: gcc
-      os: linux
-      env: SWIGLANG=
       sudo: required
       dist: trusty
     - os: linux
@@ -55,6 +52,8 @@ matrix:
     - compiler: gcc
       os: linux
       env: SWIGLANG=javascript ENGINE=node
+      sudo: required
+      dist: trusty
     - compiler: gcc
       os: linux
       env: SWIGLANG=javascript ENGINE=jsc

@@ -164,6 +164,7 @@ CPP_TEST_CASES += \
 	cpp_typedef \
 	curiously_recurring_template_pattern \
 	default_args \
+	default_arg_expressions \
 	default_arg_values \
 	default_constructor \
 	defvalue_constructor \
@@ -193,6 +194,7 @@ CPP_TEST_CASES += \
 	director_nspace_director_name_collision \
 	director_overload \
 	director_overload2 \
+	director_ownership \
 	director_pass_by_value \
 	director_primitives \
 	director_property \
@@ -490,6 +492,7 @@ CPP_TEST_CASES += \
 	throw_exception \
 	typedef_array_member \
 	typedef_class \
+	typedef_classforward_same_name \
 	typedef_funcptr \
 	typedef_inherit \
 	typedef_mptr \
@@ -676,6 +679,7 @@ C_TEST_CASES += \
 	string_simple \
 	struct_rename \
 	struct_initialization \
+	typedef_classforward_same_name \
 	typedef_struct \
 	typemap_subst \
 	union_parameter \
